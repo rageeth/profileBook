@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="5 seconds">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t] [%X{trackingId}]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <turboFilter class="ch.qos.logback.classic.turbo.DynamicThresholdFilter">
+        <Key>log_level</Key>
+        <DefaultThreshold>INFO</DefaultThreshold>
+        <OnHigherOrEqual>ACCEPT</OnHigherOrEqual>
+        <OnLower>DENY</OnLower>
+        <MDCValueLevelPair>
+            <value>debug</value>
+            <level>DEBUG</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>info</value>
+            <level>INFO</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>warn</value>
+            <level>WARN</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>error</value>
+            <level>ERROR</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>trace</value>
+            <level>TRACE</level>
+        </MDCValueLevelPair>
+    </turboFilter>
+    <appender name="TIMING_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/var/log/java-app/domainservice.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover. Make sure the path matches the one in the file element 
+				or else the rollover logs are placed in the working directory. -->
+			<fileNamePattern>/var/log/java-app/domainservice_%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<charset>UTF-8</charset>
+					<pattern>%date{dd/MMM/yyyy:HH:mm:ss.SSS ZZZ} %-4relative [%thread] %-5level %logger{35} - %msg%n
+
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="com.homedepot.checkout.log.duration" level="info" additivity="false">
+		<appender-ref ref="TIMING_FILE" />
+	</logger>
+
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
