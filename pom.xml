@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>profileBook</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -47,6 +47,11 @@
 			<scope>compile</scope>
 			<optional>true</optional>
 		</dependency>
+		        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+		
 		
 				<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -101,6 +106,35 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <version>2.2</version>
+    <!-- nothing here -->
+  </plugin>
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <version>2.2-beta-4</version>
+    <configuration>
+      <descriptorRefs>
+        <descriptorRef>jar-with-dependencies</descriptorRef>
+      </descriptorRefs>
+      <archive>
+        <manifest>
+          <mainClass>com.TestProjectSpringApplication</mainClass>
+        </manifest>
+      </archive>
+    </configuration>
+    <executions>
+      <execution>
+        <phase>package</phase>
+        <goals>
+          <goal>single</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
 		</plugins>
 	</build>
 
